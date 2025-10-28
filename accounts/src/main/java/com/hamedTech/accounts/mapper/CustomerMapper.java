@@ -8,7 +8,7 @@ public class CustomerMapper {
 
     public static CustomerDto mapToCustomerDto(Customer customer, CustomerDto customerDto){
 
-        customerDto.setEmail(customer.getEmail());
+        customerDto.setName(customer.getName());
         customerDto.setEmail(customer.getEmail());
         customerDto.setMobileNumber(customer.getMobileNumber());
 
@@ -17,7 +17,7 @@ public class CustomerMapper {
 
 
 
-    public static Customer mapToCustomerDto(CustomerDto customerDto, Customer customer){
+    public static Customer mapToCustomer(CustomerDto customerDto, Customer customer){
 
         customer.setName(customerDto.getName());
         customer.setEmail(customerDto.getEmail());

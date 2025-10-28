@@ -2,7 +2,7 @@ CREATE TABLE Customer(
     customer_id int AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL ,
     email VARCHAR(100) NOT NULL ,
-    mobileNumber VARCHAR(20) NOT NULL ,
+    mobile_number VARCHAR(20) NOT NULL ,
     created_at DATE NOT NULL ,
     created_by VARCHAR(100) NOT NULL ,
     updated_at DATE DEFAULT NULL,
