@@ -10,7 +10,7 @@ CREATE TABLE Customer(
 );
 
 
-CREATE TABLE Account(
+CREATE TABLE Accounts(
   account_number int AUTO_INCREMENT PRIMARY KEY,
   customer_id int NOT NULL ,
   account_type VARCHAR(100) NOT NULL,

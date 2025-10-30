@@ -4,6 +4,10 @@ import com.hamedTech.accounts.constants.AccountsConstants;
 import com.hamedTech.accounts.dto.CustomerDto;
 import com.hamedTech.accounts.dto.ResponseDto;
 import com.hamedTech.accounts.service.IAccountService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +20,22 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
+@Tag(
+        name = "CRUD REST APIS for accounts in BANK",
+        description = "CRUD REST APIS in accounts to create, fetch, update and delete account details"
+)
 public class AccountsController {
 
     private final IAccountService iAccountService;
 
+    @Operation(
+            summary = "Create account REST API",
+            description = "REST API to create new customer and account inside BANK"
+    )
+    @ApiResponse(
+            responseCode = "201",
+            description = "Http status created"
+    )
     @PostMapping("/create")
     public ResponseEntity<ResponseDto> createAccount(@Valid @RequestBody CustomerDto request){
 
@@ -30,9 +46,17 @@ public class AccountsController {
                 .body(new ResponseDto(AccountsConstants.STATUS_201, AccountsConstants.MESSAGE_201));
     }
 
+    @Operation(
+            summary = "Read account REST API",
+            description = "REST API to read customer and account details"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http status OK"
+    )
     @GetMapping("/fetch")
     public ResponseEntity<CustomerDto> fetchAccountDetails(@RequestParam
-                                                               @Pattern(regexp = "(^$[0-9]{10})", message = "Mobile number should be 10 digits")
+                                                               @Pattern(regexp = "^[0-9]{10}$", message = "Mobile number should be 10 digits")
                                                                String mobileNumber){
 
         CustomerDto customerDto = iAccountService.fetchAccount(mobileNumber);
@@ -42,6 +66,20 @@ public class AccountsController {
                 .body(customerDto);
     }
 
+    @Operation(
+            summary = "UPDATE account REST API",
+            description = "REST API to update customer and account details"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Http status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "417",
+                    description = "Http status internal server error"
+            )
+    })
     @PutMapping("/update")
     public ResponseEntity<ResponseDto> updateAccount(@Valid @RequestBody CustomerDto customerDto){
 
@@ -58,9 +96,23 @@ public class AccountsController {
 
     }
 
+    @Operation(
+            summary = "DELETE account REST API",
+            description = "REST API to DELETE customer and account details"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Http status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "417",
+                    description = "Http status internal server error"
+            )
+    })
     @DeleteMapping("/delete")
     public ResponseEntity<ResponseDto> deleteAccount(@RequestParam
-                                                         @Pattern(regexp = "(^$[0-9]{10})", message = "mobile number should be 10 digits")
+                                                         @Pattern(regexp = "^[0-9]{10}$", message = "mobile number should be 10 digits")
                                                          String mobileNumber){
 
        boolean isDeleted =  iAccountService.deleteAccount(mobileNumber);

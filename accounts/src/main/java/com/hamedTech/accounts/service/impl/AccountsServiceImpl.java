@@ -12,6 +12,7 @@ import com.hamedTech.accounts.mapper.CustomerMapper;
 import com.hamedTech.accounts.repository.AccountRepository;
 import com.hamedTech.accounts.repository.CustomerRepository;
 import com.hamedTech.accounts.service.IAccountService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -42,8 +43,6 @@ public class AccountsServiceImpl implements IAccountService {
         if(optionalCustomer.isPresent()){
             throw new CustomerAlreadyExistsException("Customer with mobile number provided exists: "+ customerDto.getMobileNumber());
         }
-        customer.setCreatedAt(LocalDateTime.now());
-        customer.setCreatedBy("Hamed miri");
 
         Customer savedCustomer = customerRepository.save(customer);
 
@@ -63,8 +62,6 @@ public class AccountsServiceImpl implements IAccountService {
         newAccount.setAccountNumber(randomAccountNumber);
         newAccount.setAccountType(AccountsConstants.SAVINGS);
         newAccount.setBranchAddress(AccountsConstants.ADDRESS);
-        newAccount.setCreatedAt(LocalDateTime.now());
-        newAccount.setCreatedBy("Hamed miri");
 
         return newAccount;
 

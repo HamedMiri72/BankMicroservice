@@ -16,7 +16,7 @@ public class CustomerDto {
     @Email(message = "Email should have a valid format")
     private String email;
 
-    @Pattern(regexp = "(^$[0-9]{10})", message = "Mobile number should be 10 digits")
+    @Pattern(regexp = "^[0-9]{10}$", message = "Mobile number should be 10 digits")
     private String mobileNumber;
     private AccountsDto accountsDto;
 }
