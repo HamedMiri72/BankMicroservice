@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: loans
+  datasource:
+    url: jdbc:h2:mem:loansDb
+    username: hamedmiri72
+    password: hamedmiri72
+    driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: h2
+    database-platform: org.hibernate.dialect.H2Dialect
+server:
+  port: 9091
+
+
