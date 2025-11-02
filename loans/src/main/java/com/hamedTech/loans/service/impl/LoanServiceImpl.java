@@ -4,6 +4,8 @@ import com.hamedTech.loans.constants.LoansConstants;
 import com.hamedTech.loans.dto.LoansDto;
 import com.hamedTech.loans.entity.Loans;
 import com.hamedTech.loans.exception.LoansAlreadyExists;
+import com.hamedTech.loans.exception.ResourceNotFoundException;
+import com.hamedTech.loans.mapper.LoansMapper;
 import com.hamedTech.loans.repository.LoansRepository;
 import com.hamedTech.loans.service.ILoansService;
 import lombok.RequiredArgsConstructor;
@@ -54,16 +56,34 @@ public class LoanServiceImpl implements ILoansService {
 
     @Override
     public LoansDto fetchLoanDetails(String mobileNumber) {
-        return null;
+
+        Loans loans = loansRepository.findLoansByMobileNumber(mobileNumber)
+                .orElseThrow(() -> new ResourceNotFoundException("Loans", "MobileNumber", mobileNumber));
+
+        LoansDto loansDto = LoansMapper.toLoansDto(loans, new LoansDto());
+        return loansDto;
     }
 
     @Override
     public boolean updateLoanDetails(LoansDto loansDto) {
+
+        Loans loans = loansRepository.findByLoanNumber(loansDto.getLoanNumber())
+                .orElseThrow(() -> new ResourceNotFoundException("Loans", "Loan Number", loansDto.getLoanNumber()));
+
+        LoansMapper.toLoans(loansDto, loans);
+        loansRepository.save(loans);
+
         return true;
     }
 
     @Override
     public boolean deleteLoanDetails(String mobileNumber) {
+
+        Loans loans = loansRepository.findLoansByMobileNumber(mobileNumber)
+                .orElseThrow(() -> new ResourceNotFoundException("Loans", "Mobile Number", mobileNumber));
+
+        loansRepository.deleteById(loans.getLoanId());
         return true;
+
     }
 }

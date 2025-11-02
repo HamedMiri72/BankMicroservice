@@ -42,21 +42,44 @@ public class LoansController {
     public ResponseEntity<LoansDto> fetchLoanDetails(@RequestParam
                                                      @Pattern(regexp = "^[0-9]{10}$", message = "Mobile number should be 10 digits.")
                                                      String mobileNumber){
-        return null;
+        LoansDto loansDto = loansService.fetchLoanDetails(mobileNumber);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(loansDto);
     }
 
     @PutMapping("/update")
     public ResponseEntity<ResponseDto> updateLoanDetails(@Valid @RequestBody LoansDto loansDto){
 
-        return null;
+        boolean isUpdated = loansService.updateLoanDetails(loansDto);
+        if(isUpdated){
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new ResponseDto(LoansConstants.STATUS_200, LoansConstants.MESSAGE_200));
+        }else{
+            return ResponseEntity
+                    .status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new ResponseDto(LoansConstants.STATUS_417, LoansConstants.MESSAGE_417_UPDATE));
+        }
 
     }
 
     @DeleteMapping("/delete")
     public ResponseEntity<ResponseDto> deleteLoanDetails(@RequestParam
                                                          @Pattern(regexp = "^[0-9]{10}$", message = "Mobile Number should be 10 digits")
-                                                         String MobileNumber){
-        return null;
+                                                         String mobileNumber){
+        boolean isDeleted = loansService.deleteLoanDetails(mobileNumber);
+
+        if(isDeleted){
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new ResponseDto(LoansConstants.STATUS_200, LoansConstants.MESSAGE_200));
+        }else{
+            return ResponseEntity
+                    .status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new ResponseDto(LoansConstants.STATUS_417, LoansConstants.MESSAGE_417_DELETE));
+        }
     }
 
 

@@ -30,7 +30,7 @@ public class LoansDto {
     private int totalLoan;
 
 
-    @Positive(message = "amount paid should be equal or grater than zero")
+    @PositiveOrZero(message = "amount paid should be equal or grater than zero")
     private int amountPaid;
 
     @Positive(message = "outstanding amount should be equal or grater than zero")
