@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @Schema(
         name = "accounts",
-        description = "Schema to hold accout information"
+        description = "Schema to hold account information"
 )
 public class AccountsDto {
 

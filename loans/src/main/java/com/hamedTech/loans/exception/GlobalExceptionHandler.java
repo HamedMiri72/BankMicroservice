@@ -48,7 +48,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponseDto> handleException(WebRequest, Exception exception){
+    public ResponseEntity<ErrorResponseDto> handleException(WebRequest webRequest, Exception exception){
 
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(
                 webRequest.getDescription(false),
