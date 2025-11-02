@@ -9,7 +9,7 @@ public interface ILoansService {
      *
      * @param loansDto
      */
-    void createLoan(LoansDto loansDto);
+    void createLoan(String mobileNumber);
 
     /**
      *
