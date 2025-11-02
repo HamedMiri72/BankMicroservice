@@ -14,6 +14,12 @@ import java.time.LocalDateTime;
 public class GlobalExceptionHandler {
 
 
+    private final WebRequest webRequest;
+
+    public GlobalExceptionHandler(WebRequest webRequest) {
+        this.webRequest = webRequest;
+    }
+
     @ExceptionHandler(LoansAlreadyExists.class)
     public ResponseEntity<ErrorResponseDto> handleLoansAlreadyExist(WebRequest webRequest, LoansAlreadyExists exception){
 
@@ -39,5 +45,18 @@ public class GlobalExceptionHandler {
         );
 
         return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponseDto> handleException(WebRequest, Exception exception){
+
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+                webRequest.getDescription(false),
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
