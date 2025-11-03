@@ -45,5 +45,21 @@ public class CardsController {
                 .body(cardDto);
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<ResponseDto> updateCadsDetails(@RequestBody CardDto cardDto){
+
+        boolean isUpdated = cardsService.updateCardDetails(cardDto);
+
+        if(isUpdated){
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new ResponseDto(CardConstants.STATUS_200, CardConstants.MESSAGE_200));
+        }else{
+            return ResponseEntity
+                    .status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new ResponseDto(CardConstants.STATUS_417, CardConstants.MESSAGE_417_UPDATE));
+        }
+    }
+
 
 }
