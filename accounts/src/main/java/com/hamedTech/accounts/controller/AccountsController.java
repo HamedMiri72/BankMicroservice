@@ -14,6 +14,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +33,12 @@ import org.springframework.web.bind.annotation.*;
 public class AccountsController {
 
     private final IAccountService iAccountService;
+
+    @Autowired
+    private Environment environment;
+
+    @Value("${build.version}")
+    private String buildversion;
 
     @Operation(
             summary = "Create account REST API",
@@ -164,6 +173,60 @@ public class AccountsController {
                    .status(HttpStatus.EXPECTATION_FAILED)
                    .body(new ResponseDto(AccountsConstants.STATUS_417, AccountsConstants.MESSAGE_417_DELETE));
        }
+    }
+
+
+    @Operation(
+            summary = "Build version REST API",
+            description = "REST API to get build version"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Http status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Http status internal server error",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = ErrorResponseDto.class)
+                    )
+            )
+    })
+    @GetMapping("/build-info")
+    public ResponseEntity<String> buildVersion(){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(buildversion);
+    }
+
+
+    @Operation(
+            summary = "Java version REST API",
+            description = "REST API to get java version"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Http status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Http status internal server error",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = ErrorResponseDto.class)
+                    )
+            )
+    })
+    @GetMapping("/java-version")
+    public ResponseEntity<String> getJavaVersion(){
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(environment.getProperty("JAVA_HOME"));
+
     }
 
 }
