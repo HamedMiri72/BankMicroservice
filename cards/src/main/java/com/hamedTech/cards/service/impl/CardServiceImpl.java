@@ -1,6 +1,6 @@
 package com.hamedTech.cards.service.impl;
 
-import com.hamedTech.cards.CardsMapper;
+import com.hamedTech.cards.mapper.CardsMapper;
 import com.hamedTech.cards.constant.CardConstants;
 import com.hamedTech.cards.dto.CardDto;
 import com.hamedTech.cards.entity.Card;
@@ -9,7 +9,6 @@ import com.hamedTech.cards.exception.ResourceNotFoundException;
 import com.hamedTech.cards.repository.CardRepository;
 import com.hamedTech.cards.service.ICardsService;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.apache.bcel.generic.RET;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -75,6 +74,12 @@ public class CardServiceImpl implements ICardsService {
 
     @Override
     public boolean deleteCardDetails(String mobileNumber) {
-        return false;
+
+        Card card = cardRepository.findByMobileNumber(mobileNumber)
+                .orElseThrow(() -> new ResourceNotFoundException("Card", "Mobile number", mobileNumber));
+
+        cardRepository.deleteById(card.getCardId());
+
+        return true;
     }
 }

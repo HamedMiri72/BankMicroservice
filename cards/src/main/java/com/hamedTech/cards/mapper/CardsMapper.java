@@ -1,4 +1,4 @@
-package com.hamedTech.cards;
+package com.hamedTech.cards.mapper;
 
 import com.hamedTech.cards.dto.CardDto;
 import com.hamedTech.cards.entity.Card;
