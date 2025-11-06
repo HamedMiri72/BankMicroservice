@@ -3,6 +3,7 @@ package com.hamedTech.cards.controller;
 
 import com.hamedTech.cards.constant.CardConstants;
 import com.hamedTech.cards.dto.CardDto;
+import com.hamedTech.cards.dto.CardInfoDetailsDto;
 import com.hamedTech.cards.dto.ErrorResponseDto;
 import com.hamedTech.cards.dto.ResponseDto;
 import com.hamedTech.cards.service.ICardsService;
@@ -16,6 +17,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +37,16 @@ import org.springframework.web.bind.annotation.*;
 public class CardsController {
 
     private final ICardsService cardsService;
+
+    @Value("${build.version}")
+    private  String buildVersion;
+
+
+    private final Environment environment;
+
+
+
+    private final CardInfoDetailsDto cardInfoDetailsDto;
 
     @Operation(
             summary = "Create a new card",
@@ -178,6 +192,23 @@ public class CardsController {
                     .body(new ResponseDto(CardConstants.STATUS_417, CardConstants.MESSAGE_417_DELETE));
         }
     }
+
+
+    @GetMapping("/build-info")
+    public ResponseEntity<String> getBuildVersion(){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(environment.getProperty("build.version"));
+    }
+
+
+    @GetMapping("contact-info")
+    public ResponseEntity<CardInfoDetailsDto> getContactInfo(){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(cardInfoDetailsDto);
+    }
+
 
 
 }

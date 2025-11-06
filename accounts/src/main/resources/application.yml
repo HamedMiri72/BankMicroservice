@@ -18,9 +18,24 @@ spring:
         format_sql: true
     database-platform: org.hibernate.dialect.H2Dialect
     database: h2
+  config:
+    import:
+      - "application_qa.yml"
+      - "application_prod.yml"
+  profiles:
+    active: "qa"
 server:
   port: 9090
 
 build:
-  version: "V1.0"
+  version: "V3.0"
+
+accounts:
+  message: "Hello from accounts service"
+  contactDetails:
+    email: "hamedmiri72@gmail.com"
+    phone: "123456789"
+  onCallSupport:
+    - 735 584 8222
+    - 735 584 8223
 

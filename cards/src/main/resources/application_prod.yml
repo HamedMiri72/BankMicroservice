@@ -1,0 +1,16 @@
+
+spring:
+  config:
+    activate:
+      on-profile: "prod"
+
+
+
+cards:
+  message: "Account service production mode"
+  contactDetails:
+    name: Hamed MIRI
+    email: hamedmiri72@gmail.com
+  onCallSupport:
+    - 735 584 8222
+    - 735 584 8221

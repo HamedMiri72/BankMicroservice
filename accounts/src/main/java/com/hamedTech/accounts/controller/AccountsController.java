@@ -1,6 +1,7 @@
 package com.hamedTech.accounts.controller;
 
 import com.hamedTech.accounts.constants.AccountsConstants;
+import com.hamedTech.accounts.dto.AccountDetailsInfoDto;
 import com.hamedTech.accounts.dto.CustomerDto;
 import com.hamedTech.accounts.dto.ErrorResponseDto;
 import com.hamedTech.accounts.dto.ResponseDto;
@@ -39,6 +40,9 @@ public class AccountsController {
 
     @Value("${build.version}")
     private String buildversion;
+
+    @Autowired
+    private AccountDetailsInfoDto accountDetailsInfoDto;
 
     @Operation(
             summary = "Create account REST API",
@@ -227,6 +231,32 @@ public class AccountsController {
                 .status(HttpStatus.OK)
                 .body(environment.getProperty("JAVA_HOME"));
 
+    }
+
+    @Operation(
+            summary = "Account details REST API",
+            description = "REST API to get account details"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Http status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Http status internal server error",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = ErrorResponseDto.class)
+                    )
+            )
+    })
+    @GetMapping("/contact-info")
+    public ResponseEntity<AccountDetailsInfoDto> getAccountDetails(){
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(accountDetailsInfoDto);
     }
 
 }
