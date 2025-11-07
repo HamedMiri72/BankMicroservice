@@ -1,0 +1,14 @@
+
+
+
+build:
+  version: "V3.0"
+
+cards:
+  message: "Account service"
+  contactDetails:
+    name: Hamed MIRI
+    email: hamedmiri72@gmail.com
+  onCallSupport:
+    - 735 584 8222
+    - 735 584 8221

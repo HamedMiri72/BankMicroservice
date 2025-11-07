@@ -18,7 +18,27 @@ spring:
         format_sql: true
     database: h2
     database-platform: org.hibernate.dialect.H2Dialect
+  config:
+    import:
+      - "application_prod.yml"
+      - "application_qa.yml"
+  profiles:
+    active: "qa"
+
 server:
   port: 9091
+
+
+build:
+  version: "V3.0"
+
+loans:
+  message: "Welcome to loans service"
+  contactDetails:
+    name: "Hamed miri"
+    email: "hamedmiri72@gmail.com"
+  onCallSupport:
+    - 735 584 8222
+    - 735 584 8222
 
 

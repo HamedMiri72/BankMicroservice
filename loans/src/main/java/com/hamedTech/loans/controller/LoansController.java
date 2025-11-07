@@ -4,6 +4,7 @@ package com.hamedTech.loans.controller;
 import com.hamedTech.loans.constants.LoansConstants;
 import com.hamedTech.loans.dto.ErrorResponseDto;
 import com.hamedTech.loans.dto.LoansDto;
+import com.hamedTech.loans.dto.LoansInfoDto;
 import com.hamedTech.loans.dto.ResponseDto;
 import com.hamedTech.loans.service.ILoansService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +16,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +37,12 @@ public class LoansController {
 
     private final ILoansService loansService;
 
+    @Value("${build.version}")
+    private String buildVersion;
+
+    private final Environment environment;
+
+    private final LoansInfoDto loandInfoDto;
 
     @Operation(
             summary = "Create a new Loan",
@@ -169,6 +178,21 @@ public class LoansController {
                     .status(HttpStatus.EXPECTATION_FAILED)
                     .body(new ResponseDto(LoansConstants.STATUS_417, LoansConstants.MESSAGE_417_DELETE));
         }
+    }
+
+    @GetMapping("/build-info")
+    public ResponseEntity<String> getBuildInfo(){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(buildVersion);
+    }
+
+
+    @GetMapping("/contact-info")
+    public ResponseEntity<LoansInfoDto> getLoansInfo(){
+        return ResponseEntity.
+                status(HttpStatus.OK)
+                .body(loandInfoDto);
     }
 
 
