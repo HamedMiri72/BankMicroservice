@@ -2,12 +2,29 @@ spring:
   application:
     name: configserver
   profiles:
-    active: native
+#    active: native
+      active: git
   cloud:
     config:
       server:
-        native:
-          search-locations: "classPath:/config"
+#        native:
+##          search-locations: "classPath:/config"
+#          search-locations: "file:////Users/hamedmiri/Documents/Developer/file_system_configserver_bank"
+        git:
+          uri: "https://github.com/HamedMiri72/bank_configuration.git"
+          default-label : main
+          timeout: 5
+          clone-on-start: true
+          force-pull: true
+
+encrypt:
+  key: "gufguyfutdfyd64764757yhkjjhiuy87"
 
 server:
   port: 8071
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

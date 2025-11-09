@@ -18,25 +18,22 @@ spring:
         format_sql: true
     database: h2
     database-platform: org.hibernate.dialect.H2Dialect
-  config:
-    import:
-      - "application_prod.yml"
-      - "application_qa.yml"
   profiles:
-    active: "qa"
+    active: "prod"
+  config:
+    import: "optional:configserver:http://localhost:8071"
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
+
 
 server:
   port: 9092
 
-
-build:
-  version: "V3.0"
-
-cards:
-  message: "Account service"
-  contactDetails:
-    name: Hamed MIRI
-    email: hamedmiri72@gmail.com
-  onCallSupport:
-    - 735 584 8222
-    - 735 584 8221
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
