@@ -16,7 +16,7 @@ services:
     environment:
       SPRING_APPLICATION_NAME: accounts
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
-      SPRING_PROFILES_ACTIVE: default
+      SPRING_PROFILES_ACTIVE: prod
       SPRING_RABBITMQ_HOST: "rabbitmq"
 
 
@@ -39,7 +39,7 @@ services:
     environment:
       SPRING_APPLICATION_NAME: cards
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
-      SPRING_PROFILES_ACTIVE: default
+      SPRING_PROFILES_ACTIVE: prod
       SPRING_RABBITMQ_HOST: "rabbitmq"
 
 
@@ -61,7 +61,7 @@ services:
     environment:
       SPRING_APPLICATION_NAME: loans
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
-      SPRING_PROFILES_ACTIVE: default
+      SPRING_PROFILES_ACTIVE: prod
       SPRING_RABBITMQ_HOST: "rabbitmq"
 
   configserver:
