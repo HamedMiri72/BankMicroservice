@@ -1,4 +1,4 @@
-CREATE TABLE Customer(
+CREATE TABLE IF NOT EXISTS Customer(
     customer_id int AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL ,
     email VARCHAR(100) NOT NULL ,
@@ -10,7 +10,7 @@ CREATE TABLE Customer(
 );
 
 
-CREATE TABLE Accounts(
+CREATE TABLE IF NOT EXISTS Accounts(
   account_number int AUTO_INCREMENT PRIMARY KEY,
   customer_id int NOT NULL ,
   account_type VARCHAR(100) NOT NULL,

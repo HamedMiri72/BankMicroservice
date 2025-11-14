@@ -1,23 +1,53 @@
+#spring:
+#  application:
+#    name: cards
+#  datasource:
+#    url: jdbc:h2:mem:cardsDb
+#    username: hamedmiri72
+#    password: hamedmiri72
+#    driver-class-name: org.h2.Driver
+#  h2:
+#    console:
+#      enabled: true
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
+#    database: h2
+#    database-platform: org.hibernate.dialect.H2Dialect
+#  profiles:
+#    active: "prod"
+#  config:
+#    import: "optional:configserver:http://localhost:8071"
+#  rabbitmq:
+#    host: "localhost"
+#    port: 5672
+#    username: "guest"
+#    password: "guest"
+
 spring:
   application:
     name: cards
   datasource:
-    url: jdbc:h2:mem:cardsDb
-    username: hamedmiri72
-    password: hamedmiri72
-    driver-class-name: org.h2.Driver
-  h2:
-    console:
-      enabled: true
+    url: jdbc:mysql://localhost:3307/cardsdb
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+    sql:
+      init:
+        mode: always
     properties:
       hibernate:
         format_sql: true
-    database: h2
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.MySQLDialect
   profiles:
     active: "prod"
   config:
@@ -29,6 +59,7 @@ spring:
     password: "guest"
 
 
+
 server:
   port: 9092
 
@@ -37,3 +68,26 @@ management:
     web:
       exposure:
         include: "*"
+  info:
+    env:
+      enabled: true
+  endpoint:
+    shutdown:
+      enabled: true
+
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: "http://localhost:8070/eureka/"
+
+
+info:
+  app:
+    name: "cards"
+    description: "cards microservice to manage cards"
+    version: "v1.0.0"

@@ -1,4 +1,4 @@
-CREATE TABLE Loans(
+CREATE TABLE IF NOT EXISTS Loans(
     loan_id int NOT NULL AUTO_INCREMENT,
     mobile_number VARCHAR(15) NOT NULL,
     loan_number VARCHAR(15) NOT NULL,
