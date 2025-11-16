@@ -66,7 +66,7 @@ services:
 
 
   accounts:
-    image: hamedmiri72/accounts:s7
+    image: hamedmiri72/accounts:s8
     container_name: "accounts"
     ports:
       - 9090:9090
@@ -74,6 +74,8 @@ services:
       configserver:
         condition: service_healthy
       accountsdb:
+        condition: service_healthy
+      eurekaserver:
         condition: service_healthy
     deploy:
       resources:
@@ -89,12 +91,13 @@ services:
       SPRING_DATASOURCE_URL: "jdbc:mysql://accountsdb:3306/accountsdb"
       SPRING_DATASOURCE_USERNAME: "root"
       SPRING_DATASOURCE_PASSWORD: "root"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eurekaserver:8070/eureka/"
 
 
 
 
   cards:
-    image: hamedmiri72/cards:s7
+    image: hamedmiri72/cards:s8
     container_name: "cards"
     ports:
       - 9092:9092
@@ -102,6 +105,8 @@ services:
       configserver:
         condition: service_healthy
       cardsdb:
+        condition: service_healthy
+      eurekaserver:
         condition: service_healthy
     deploy:
       resources:
@@ -117,11 +122,12 @@ services:
       SPRING_DATASOURCE_URL: "jdbc:mysql://cardsdb:3306/cardsdb"
       SPRING_DATASOURCE_USERNAME: "root"
       SPRING_DATASOURCE_PASSWORD: "root"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eurekaserver:8070/eureka/"
 
 
 
   loans:
-    image: hamedmiri72/loans:s7
+    image: hamedmiri72/loans:s8
     container_name: "loans"
     ports:
       - 9091:9091
@@ -129,6 +135,8 @@ services:
       configserver:
         condition: service_healthy
       loansdb:
+        condition: service_healthy
+      eurekaserver:
         condition: service_healthy
     deploy:
       resources:
@@ -144,10 +152,11 @@ services:
       SPRING_DATASOURCE_URL: "jdbc:mysql://loansdb:3306/loansdb"
       SPRING_DATASOURCE_USERNAME: "root"
       SPRING_DATASOURCE_PASSWORD: "root"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eurekaserver:8070/eureka/"
 
 
   configserver:
-    image: hamedmiri72/configserver:s7
+    image: hamedmiri72/configserver:s8
     container_name: "configserver"
     ports:
       - 8071:8071
@@ -168,6 +177,30 @@ services:
           memory: 700m
     networks:
       - bank
+
+  eurekaserver:
+    image: "hamedmiri72/eurekaserver:s8"
+    container_name: "eurekaserver"
+    ports:
+      - 8070:8070
+    healthcheck:
+      test: "curl --fail --silent localhost:8070/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    depends_on:
+      configserver:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - bank
+    environment:
+      SPRING_APPLICATION_NAME: "eurekaserver"
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
 
   rabbitmq:
     image: rabbitmq:3.12-management
