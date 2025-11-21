@@ -66,10 +66,17 @@ services:
 
 
   accounts:
-    image: hamedmiri72/accounts:s8
+    platform: linux/amd64
+    image: hamedmiri72/accounts:s9
     container_name: "accounts"
     ports:
       - 9090:9090
+    healthcheck:
+      test: "curl --fail --silent localhost:9090/actuator/health | grep UP || exit 1"
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
     depends_on:
       configserver:
         condition: service_healthy
@@ -97,10 +104,17 @@ services:
 
 
   cards:
-    image: hamedmiri72/cards:s8
+    platform: linux/amd64
+    image: hamedmiri72/cards:s9
     container_name: "cards"
     ports:
       - 9092:9092
+    healthcheck:
+      test: "curl --fail --silent localhost:9092/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
     depends_on:
       configserver:
         condition: service_healthy
@@ -127,10 +141,17 @@ services:
 
 
   loans:
-    image: hamedmiri72/loans:s8
+    platform: linux/amd64
+    image: hamedmiri72/loans:s9
     container_name: "loans"
     ports:
       - 9091:9091
+    healthcheck:
+      test: "curl --fail --silent localhost:9091/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
     depends_on:
       configserver:
         condition: service_healthy
@@ -156,7 +177,8 @@ services:
 
 
   configserver:
-    image: hamedmiri72/configserver:s8
+    platform: linux/amd64
+    image: hamedmiri72/configserver:s9
     container_name: "configserver"
     ports:
       - 8071:8071
@@ -179,7 +201,8 @@ services:
       - bank
 
   eurekaserver:
-    image: "hamedmiri72/eurekaserver:s8"
+    platform: linux/amd64
+    image: "hamedmiri72/eurekaserver:s9"
     container_name: "eurekaserver"
     ports:
       - 8070:8070
@@ -201,6 +224,33 @@ services:
     environment:
       SPRING_APPLICATION_NAME: "eurekaserver"
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+
+
+  gatewayserver:
+    platform: linux/amd64
+    image: "hamedmiri72/gatewayserver:s9"
+    container_name: "gatewayserver"
+    ports:
+      - 8072:8072
+    depends_on:
+      accounts:
+        condition: service_healthy
+      loans:
+        condition: service_healthy
+      cards:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - bank
+    environment:
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+      SPRING_APPLICATION_NAME: "gatewayserver"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eurekaserver:8070/eureka/"
+      SPRING_PROFILE_ACTIVE: default
+
 
   rabbitmq:
     image: rabbitmq:3.12-management

@@ -49,12 +49,20 @@ management:
     web:
       exposure:
         include: "*"
+  health:
+    readiness:
+      enabled: true
+    liveness:
+      enabled: true
   info:
     env:
       enabled: true
   endpoint:
     shutdown:
       enabled: true
+    health:
+      probs:
+        enabled: true
 
 eureka:
   instance:

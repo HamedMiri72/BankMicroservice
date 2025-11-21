@@ -29,3 +29,13 @@ info:
     name: "gatewayserver"
     description: "gatway server for out bank microservice"
     version: "V1.0.0"
+
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        slidingWindowSize: 10
+        permittedNumberOfCallsInHalfOpenState: 3
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
